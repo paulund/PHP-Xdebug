@@ -1,20 +1,26 @@
-FROM php:7.4-cli-alpine
+FROM php:7.0
 
-RUN set -ex \
-    && apk update \
-    && apk add --no-cache git mysql-client curl openssh-client icu libpng freetype libzip \
-       libjpeg-turbo postgresql-dev libffi-dev libsodium \
-    && apk add --no-cache --virtual build-dependencies icu-dev libxml2-dev freetype-dev libzip-dev libpng-dev \
-        libjpeg-turbo-dev g++ make autoconf libsodium-dev\
-    && mkdir /src && cd /src && git clone https://github.com/xdebug/xdebug.git \
-    && cd xdebug \
-    && sh ./rebuild.sh \
-    && docker-php-source extract \
-    && docker-php-ext-enable xdebug\
-    && docker-php-source delete \
-    && cd  / && rm -fr /src \
-    && apk del build-dependencies \
-    && rm -rf /tmp/*
+# Install developer dependencies
+RUN apt-get update -yqq && apt-get install -y git bison libsqlite3-dev libxml2-dev libicu-dev libfreetype6-dev libmcrypt-dev libjpeg62-turbo-dev libcurl4-gnutls-dev libbz2-dev libssl-dev -yqq
 
-USER www-data
-WORKDIR /var/www
+# Install php extensions
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo_sqlite
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-install json
+RUN docker-php-ext-install calendar
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install bz2
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mcrypt
+RUN docker-php-ext-install curl
+RUN docker-php-ext-install intl
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-install gd
+
+# Install PECL extensions
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
