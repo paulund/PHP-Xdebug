@@ -22,5 +22,5 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 RUN docker-php-ext-install gd
 
 # Install PECL extensions
-RUN pecl install xdebug
+RUN pecl install xdebug-2.7.2
 RUN docker-php-ext-enable xdebug
