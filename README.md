@@ -2,6 +2,8 @@
 
 ---
 
+![PHP Docker Xdebug](https://repository-images.githubusercontent.com/210436638/aa05f785-f6d7-4392-8304-4d382b6c33c0)
+
 # How To Use
 To use this Docker image you need to have PHPStorm installed on your local machine.
 
