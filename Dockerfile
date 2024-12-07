@@ -1,10 +1,21 @@
-FROM php:8.4-cli-alpine
+FROM php:8.4-apache AS base
 
-RUN set -ex \
-    && apk update \
-    && apk add --no-cache mysql-client curl libpng libzip libffi-dev libsodium autoconf g++ make \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug
+RUN docker-php-ext-install pdo_mysql opcache && \
+    a2enmod rewrite negotiation
 
-USER www-data
-WORKDIR /var/www
+COPY build/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+FROM base AS development
+
+RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+
+COPY build/php/conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
+
+RUN pecl channel-update pecl.php.net && \
+    pecl install xdebug-3.4.0 && \
+    docker-php-ext-enable xdebug
+
+FROM base AS app
+
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+COPY . /srv/app

@@ -25,7 +25,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 # Docker Image
 The Docker image is based on the official PHP image and has Xdebug installed.
@@ -38,6 +38,7 @@ There are different version of PHP that you can use with this repository current
 - 8.1 - `git checkout php81-1.0`
 - 8.2 - `git checkout php82-1.0`
 - 8.3 - `git checkout php83-1.0`
+- 8.4 - `git checkout php84-1.0`
 
 # Build the Docker Image
 You can build the Docker image yourself by cloning this repository and running the following command.
@@ -55,4 +56,8 @@ Xdebug is a PHP extension which provides debugging and profiling capabilities. I
 PHPStorm is an IDE for PHP development. It has a lot of features to help you write your code faster and easier.
 
 [PHPStorm Official Website](https://www.jetbrains.com/phpstorm/)
+
+Add the docker interpreter to PHPStorm by following this guide
+
+[Configure remote PHP interpreter]https://www.jetbrains.com/help/phpstorm/configuring-remote-interpreters.html#remote-interpreter-docker
 
